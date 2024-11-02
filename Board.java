@@ -3,8 +3,9 @@ package TicTacToe;
 import java.util.Scanner;
 
 public class Board{
-    private String x = "X";
-    private String o = "O";
+    private Piece x = new Piece('X');
+    private Piece o = new Piece('O');
+    
     private String empty = "-";
     private String displayBoard;
 
