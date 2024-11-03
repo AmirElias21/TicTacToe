@@ -1,0 +1,86 @@
+
+Tic Tac Toe Project To-Do List
+
+---
+
+### Core Game Logic
+1. Complete Game Flow:
+   - [ ] Finalize the game loop in `Main`, ensuring it stops immediately after a player wins.
+   - [ ] Refine `getWinner` method in `Board` to simplify and ensure proper win/loss handling.
+   - [ ] Update `gameOver` method to reset the `board` array fully.
+
+2. Enum for Player Symbols:
+   - [ ] Create an enum (`PlayerSymbol` or similar) with values `X` and `O`.
+   - [ ] Update the `Player` and `Board` classes to use this enum instead of `int` values for `X` and `O`.
+   - [ ] Ensure that only one instance of each symbol can be assigned to players, preventing duplicates.
+
+3. Dumb AI:
+   - [ ] Implement a "dumb" AI that places moves randomly in empty spaces.
+   - [ ] Add the option in the main menu to play against the dumb AI.
+
+---
+
+### Smart AI Logic
+1. Smart AI with If-Statements:
+   - [ ] Develop a "smart" AI using conditional checks (e.g., blocking moves, completing lines).
+   - [ ] Add the option to play against the smart AI in the main menu.
+
+---
+
+### Game History Tracking
+1. Game Log in 2D Array:
+   - [ ] Create a 2D array to store each game’s details, including:
+     - Player IDs, usernames, win/loss records, date, and time.
+
+2. File Handling:
+   - [ ] Implement code to save game history to a file after each game.
+   - [ ] Implement code to load game history from the file at the start.
+   - [ ] Ensure data format consistency (e.g., CSV format) to keep records readable.
+
+3. Leaderboard and Rankings:
+   - [ ] Sort and display players by the number of wins, showing top-ranked players.
+   - [ ] Display this leaderboard in the main menu.
+
+---
+
+### Player Management
+1. Unique Player IDs:
+   - [ ] Generate unique IDs for each player to prevent duplicates.
+
+2. Player Accounts:
+   - [ ] Implement username and password fields.
+   - [ ] Track the number of games played, opponents faced, and win/loss history.
+
+3. Total Game Count:
+   - [ ] Add a global counter to track the total number of games played.
+
+---
+
+### JavaFX GUI
+1. Transition to JavaFX:
+   - [ ] Design the GUI layout (board display, menu screens, and input fields).
+   - [ ] Implement interactive elements for placing moves, selecting game modes, and logging in.
+
+2. Leaderboard and History in GUI:
+   - [ ] Display the leaderboard and player history in a visual format.
+   - [ ] Create input fields for login and registration for user accounts.
+
+3. Testing and Polishing:
+   - [ ] Test all features to ensure smooth gameplay.
+   - [ ] Polish the interface for a user-friendly experience.
+
+---
+
+### Final Testing and Debugging
+1. Game Flow Testing:
+   - [ ] Test each game mode thoroughly (Player vs. Player, Player vs. Dumb AI, Player vs. Smart AI).
+
+2. Data Persistence:
+   - [ ] Test saving/loading game history and account data from files.
+
+3. GUI Functionality:
+   - [ ] Verify that all interactive elements work correctly in JavaFX.
+
+---
+
+Estimated Timeline: 13-18 days

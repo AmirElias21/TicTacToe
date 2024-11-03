@@ -158,62 +158,61 @@ public class Board{
     }
 
     
-    public boolean getWinner(Player player1, Player player2){
-        if(checkRows() == player1.getSymbol()){
-            player1.updateWinCount();
-            player2.updateLoseCount();
+    public int getWinner(Player player1, Player player2){
+        if(checkTie()){
+            System.out.println("Its a tie!");
+            player1.updateTieCount();
+            player2.updateTieCount();
             gameOver();
-            return true;
-        }
-        if(checkRows() == player2.getSymbol()){
-            player2.updateWinCount();
-            player1.updateLoseCount();
-            gameOver();
-            return true;
+            return 3;
         }
 
-        if(checkCols() == player1.getSymbol()){
-            player1.updateWinCount();
-            player2.updateLoseCount();
-            gameOver();
-            return true;
-        }
-        if(checkCols() == player2.getSymbol()){
-            player2.updateWinCount();
-            player1.updateLoseCount();
-            gameOver();
-            return true;
+        int winnerSymbol = checkRows();
+
+        if(winnerSymbol == 0){ 
+            winnerSymbol = checkCols();
         }
 
-        if(checkLeftToRightDiagonal() == player1.getSymbol()){
-            player1.updateWinCount();
-            player2.updateLoseCount();
-            gameOver();
-            return true;
-        }
-        if(checkLeftToRightDiagonal() == player2.getSymbol()){
-            player2.updateWinCount();
-            player1.updateLoseCount();
-            gameOver();
-            return true;
+        if(winnerSymbol == 0){
+             winnerSymbol = checkRightToLeftDiagonal();
         }
 
-        if(checkRightToLeftDiagonal() == player1.getSymbol()){
+        if(winnerSymbol == 0){
+             winnerSymbol = checkLeftToRightDiagonal();
+        }
+
+        if(winnerSymbol == player1.getSymbol()) {
+            System.out.println(player1.getName() + " won!");
             player1.updateWinCount();
             player2.updateLoseCount();
             gameOver();
-            return true;
+            return player1.getSymbol();  // Indicate player1 won
         }
-        if(checkRightToLeftDiagonal() == player2.getSymbol()){
+
+        if(winnerSymbol == player2.getSymbol()) {
+            System.out.println(player2.getName() + " won!");
             player2.updateWinCount();
             player1.updateLoseCount();
             gameOver();
-            return true;
+            return player2.getSymbol();  // Indicate player2 won
         }
-        return false;
+
+        return 0; // No winner yet
    }
+
+    public boolean checkTie(){
+        int countEmpty = 0;
+        for(int row = 0; row < SIZE; row++){
+            for(int col = 0; col < SIZE; col++){
+                if(isEmpty(row, col)){
+                    countEmpty++;
+                }
+            }
+        }
+        return countEmpty <= 0;
+   } 
    
-    private boolean isX(int pos_x, int pos_y){
+   private boolean isX(int pos_x, int pos_y){
         return this.board[pos_x][pos_y] == 1;
     }
   

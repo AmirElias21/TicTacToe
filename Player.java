@@ -6,6 +6,7 @@ public class Player {
     private int x_or_o;
     private int winCount; // will create read and write into file later in the code
     private int loseCount; // will create read and write into file later in the code
+    private int tieCount;
 
     private int winStreak; // will create read and write into file later in the code
     private int loseStreak; // will create read and write into file later in the code
@@ -20,6 +21,9 @@ public class Player {
     }
     public void updateLoseCount(){
         loseCount++;
+    }
+    public void updateTieCount(){
+        tieCount++;
     }
 
     public int getSymbol(){
