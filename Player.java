@@ -25,4 +25,8 @@ public class Player {
     public int getSymbol(){
         return this.x_or_o;
     }
+
+    public String getName(){
+        return this.name;
+    }
 }

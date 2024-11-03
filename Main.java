@@ -4,8 +4,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Board board = new Board();
-        System.out.println(board);
+        run();
     }
 
     public static void menu(int choice){
@@ -13,7 +12,7 @@ public class Main {
             case 1:
                 
                 break;
-                
+
             case 2:
 
                 break;
@@ -33,4 +32,21 @@ public class Main {
         System.out.println("Choice: ");
         return scan.nextInt();
     }
+
+    public static void run(){
+        Board board = new Board();
+        System.out.println(board);
+
+        Player player1 = new Player("Amir", 1);
+        Player player2 = new Player("Kemoy", 2);
+
+        while(!board.getWinner(player1, player2)){
+            board.playerTurn(player1);
+            System.out.println(board);
+            board.playerTurn(player2);
+            System.out.println(board);
+        }
+    }
+
+
 }

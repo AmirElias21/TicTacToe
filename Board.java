@@ -34,7 +34,7 @@ public class Board{
         String temp = "";
         for(int row = 0; row < SIZE; row++){
             for(int col = 0; col < SIZE; col++){
-                if(isEmpty(row, col)){
+                if(!isEmpty(row, col)){
                     if(this.board[row][col] == 1){
                         temp += x;
                     }else if(this.board[row][col] == 2){
@@ -55,18 +55,24 @@ public class Board{
         displayBoard = temp;
     }
 
-    private void playerTurn(Player player){
+    public void playerTurn(Player player){
         Scanner scan = new Scanner(System.in);
         int row;
         int col;
         while(true){
-            System.out.println("Row: ");
-            row = scan.nextInt();
+            System.out.println(player.getName() + "'s turn:");
+            System.out.print("Row: ");
+            row = scan.nextInt() - 1;
             if(row >= 0 && row <= 3){
-                System.out.println("Col: ");
-                col = scan.nextInt();
+                System.out.print("Col: ");
+                col = scan.nextInt() - 1;
                 if(col >= 0 && col <= 3){
-                    placeSymbol(row, col, player.getSymbol());
+                    if(validate(row, col)){
+                        placeSymbol(row, col, player.getSymbol());
+                        updateBoardDisplay();
+                        System.out.println();
+                        break;
+                    }
                 }
             }
         }
@@ -79,6 +85,7 @@ public class Board{
             }
         }
     }
+    
     
     private boolean isEmpty(int cor_x, int cor_y){
         return board[cor_x][cor_y] == 0;
@@ -149,8 +156,9 @@ public class Board{
         }
         return 0;
     }
+
     
-    public boolean getWinnder(Player player1, Player player2){
+    public boolean getWinner(Player player1, Player player2){
         if(checkRows() == player1.getSymbol()){
             player1.updateWinCount();
             player2.updateLoseCount();
@@ -208,12 +216,12 @@ public class Board{
     private boolean isX(int pos_x, int pos_y){
         return this.board[pos_x][pos_y] == 1;
     }
+  
     private boolean isY(int pos_x, int pos_y){
         return this.board[pos_x][pos_y] == 2;
     }
+
     
-
-
     @Override
     public String toString() {
         return this.displayBoard;
