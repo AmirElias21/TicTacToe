@@ -3,30 +3,26 @@ package TicTacToe;
 import java.util.Scanner;
 
 public class Board{
-    private Piece x = new Piece('X');
-    private Piece o = new Piece('O');
+    private Piece x = Piece.X;
+    private Piece o = Piece.O;
+    private Piece empty = Piece.EMPTY;
     
-    private String empty = "-";
     private String displayBoard;
-
-    private int x_score;
-    private int o_score;
 
     private final int SIZE = 3;
 
-    private int[][] board = new int[SIZE][SIZE];
+    private Piece[][] board = new Piece[SIZE][SIZE];
 
     public Board(){
+        cleanBoard();
         updateBoardDisplay();
     }
 
 
 
-    public void placeSymbol (int cor_x, int cor_y, int x_or_o){
+    public void placeSymbol (int cor_x, int cor_y, Piece piece){
         if(isEmpty(cor_x, cor_y)){
-            if(validate(cor_x, cor_y)){
-                this.board[cor_x][cor_y] = x_or_o;
-            }
+            this.board[cor_x][cor_y] = piece;
         }
     }
 
@@ -35,9 +31,9 @@ public class Board{
         for(int row = 0; row < SIZE; row++){
             for(int col = 0; col < SIZE; col++){
                 if(!isEmpty(row, col)){
-                    if(this.board[row][col] == 1){
+                    if(this.board[row][col] == Piece.X){
                         temp += x;
-                    }else if(this.board[row][col] == 2){
+                    }else if(this.board[row][col] == Piece.O){
                         temp += o;
                     }
                 }else{
@@ -67,7 +63,7 @@ public class Board{
                 System.out.print("Col: ");
                 col = scan.nextInt() - 1;
                 if(col >= 0 && col <= 3){
-                    if(validate(row, col)){
+                    if(isEmpty(row, col)){
                         placeSymbol(row, col, player.getSymbol());
                         updateBoardDisplay();
                         System.out.println();
@@ -78,148 +74,136 @@ public class Board{
         }
     }
     
-    private void gameOver(){
-        for(int[] row : this.board){
-            for(int col : row){
-                col = 0;
+    private void cleanBoard(){
+        for(int row = 0; row < SIZE; row++){
+            for(int col = 0; col < SIZE; col++){
+                this.board[row][col] = Piece.EMPTY;
             }
         }
+        updateBoardDisplay();
     }
     
     
     private boolean isEmpty(int cor_x, int cor_y){
-        return board[cor_x][cor_y] == 0;
-    }
-
-    private boolean validate(int pos_x, int pos_y){
-        return this.board[pos_x][pos_y] == 1 ? false : this.board[pos_x][pos_y] == 2 ? false : true;
+        return board[cor_x][cor_y] == Piece.EMPTY;
     }
 
     // Check win condition
-    private int checkRows(){
+    private Piece checkRows(){
         for(int row = 0; row < SIZE; row++){
             if(isEmpty(row, 0)){
                 continue;
             }
             if(this.board[row][0] == this.board[row][1] && this.board[row][0] == this.board[row][2]){
-                if(isX(row, 0)){
-                    return 1;
+                if(this.board[row][0] == Piece.X){
+                    return Piece.X;
                 }else{
-                    return 2;
+                    return Piece.O;
                 }
             }
 
         }
-        return 0;
+        return Piece.EMPTY;
     }
 
-    private int checkCols(){
+    private Piece checkCols(){
         for(int col = 0; col < SIZE; col++){
             if(isEmpty(0, col)){
                 continue;
             }
             if(this.board[0][col] == this.board[1][col] && this.board[0][col] == this.board[2][col]){
-                if(isX(0, col)){
-                    return 1;
+                if(this.board[0][col] == Piece.X){
+                    return Piece.X;
                 }else{
-                    return 2;
+                    return Piece.O;
                 }
             }
         }
-        return 0;
+        return Piece.EMPTY;
     }   
 
-    private int checkLeftToRightDiagonal(){
+    private Piece checkLeftToRightDiagonal(){
         if(isEmpty(0,0)){
-            return 0;
+            return Piece.EMPTY;
         }
         if((this.board[0][0] == this.board[1][1]) && (this.board[0][0] == this.board[2][2])){
-            if(isX(0, 0)){
-                return 1;
+            if(this.board[0][0] == Piece.X){
+                return Piece.X;
             }else{
-                return 2;
+                return Piece.O;
             }
         }
-        return 0;
+        return Piece.EMPTY;
     }
     
-    private int checkRightToLeftDiagonal(){
+    private Piece checkRightToLeftDiagonal(){
         if(isEmpty(0,2)){
-            return 0;
+            return Piece.EMPTY;
         }
         if((this.board[0][2] == this.board[1][1]) && (this.board[0][2] == this.board[2][0])){
-            if(isX(0, 2)){
-                return 1;
+            if(this.board[0][2] == Piece.X){
+                return Piece.X;
             }else{
-                return 2;
+                return Piece.O;
             }
         }
-        return 0;
+        return Piece.EMPTY;
     }
 
     
-    public int getWinner(Player player1, Player player2){
-        if(checkTie()){
-            System.out.println("Its a tie!");
-            player1.updateTieCount();
-            player2.updateTieCount();
-            gameOver();
-            return 3;
-        }
+    public Piece getWinner(Player player1, Player player2){
+        Piece winnerSymbol = checkRows();
 
-        int winnerSymbol = checkRows();
-
-        if(winnerSymbol == 0){ 
+        if(winnerSymbol == Piece.EMPTY){
             winnerSymbol = checkCols();
         }
 
-        if(winnerSymbol == 0){
-             winnerSymbol = checkRightToLeftDiagonal();
+        if(winnerSymbol == Piece.EMPTY){
+            winnerSymbol = checkRightToLeftDiagonal();
         }
 
-        if(winnerSymbol == 0){
-             winnerSymbol = checkLeftToRightDiagonal();
+        if(winnerSymbol == Piece.EMPTY){
+            winnerSymbol = checkLeftToRightDiagonal();
         }
-
+    
+        if(winnerSymbol == Piece.TIE || checkTie()){
+            System.out.println("It's a tie!");
+            player1.updateTieCount();
+            player2.updateTieCount();
+            cleanBoard();
+            return Piece.TIE;
+        }
+    
         if(winnerSymbol == player1.getSymbol()) {
             System.out.println(player1.getName() + " won!");
             player1.updateWinCount();
             player2.updateLoseCount();
-            gameOver();
-            return player1.getSymbol();  // Indicate player1 won
+            cleanBoard();
+            return player1.getSymbol();
         }
-
+    
         if(winnerSymbol == player2.getSymbol()) {
             System.out.println(player2.getName() + " won!");
             player2.updateWinCount();
             player1.updateLoseCount();
-            gameOver();
-            return player2.getSymbol();  // Indicate player2 won
+            cleanBoard();
+            return player2.getSymbol();
         }
-
-        return 0; // No winner yet
-   }
+    
+        return Piece.EMPTY; // No winner yet
+    }
+    
 
     public boolean checkTie(){
-        int countEmpty = 0;
         for(int row = 0; row < SIZE; row++){
             for(int col = 0; col < SIZE; col++){
                 if(isEmpty(row, col)){
-                    countEmpty++;
+                    return false; // As soon as an empty cell is found, it’s not a tie
                 }
             }
         }
-        return countEmpty <= 0;
-   } 
-   
-   private boolean isX(int pos_x, int pos_y){
-        return this.board[pos_x][pos_y] == 1;
+        return true; // if No empty cells found, then it's a tie
     }
-  
-    private boolean isY(int pos_x, int pos_y){
-        return this.board[pos_x][pos_y] == 2;
-    }
-
     
     @Override
     public String toString() {

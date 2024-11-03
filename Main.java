@@ -37,28 +37,14 @@ public class Main {
         Board board = new Board();
         System.out.println(board);
 
-        Player player1 = new Player("Amir", 1);
-        Player player2 = new Player("Kemoy", 2);
+        Player player1 = new Player("Amir", Piece.X);
+        Player player2 = new Player("Kemoy", Piece.O);
 
-        while(true){
+        while(board.getWinner(player1, player2) == Piece.EMPTY){
             board.playerTurn(player1);
             System.out.println(board);
-            if(board.getWinner(player1, player2) != 0){
-                break;
-            }
-            if(board.getWinner(player1, player2) == 3){
-                break;
-            }
             board.playerTurn(player2);
             System.out.println(board);
-            if(board.getWinner(player1, player2) != 0){
-                break;
-            }
-            if(board.getWinner(player1, player2) == 3){
-                break;
-            }
         }
     }
-
-
 }

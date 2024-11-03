@@ -3,7 +3,9 @@ package TicTacToe;
 public class Player {
     private String name; // will create read and write into file later in the code
     
-    private int x_or_o;
+    private Piece piece;
+
+
     private int winCount; // will create read and write into file later in the code
     private int loseCount; // will create read and write into file later in the code
     private int tieCount;
@@ -11,9 +13,9 @@ public class Player {
     private int winStreak; // will create read and write into file later in the code
     private int loseStreak; // will create read and write into file later in the code
 
-    public Player(String name, int x_or_o){
+    public Player(String name, Piece piece){
         this.name = name;
-        this.x_or_o = x_or_o;
+        this.piece = piece;
     }
 
     public void updateWinCount(){
@@ -26,8 +28,8 @@ public class Player {
         tieCount++;
     }
 
-    public int getSymbol(){
-        return this.x_or_o;
+    public Piece getSymbol(){
+        return this.piece;
     }
 
     public String getName(){

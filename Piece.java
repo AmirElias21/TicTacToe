@@ -1,14 +1,21 @@
 package TicTacToe;
 
-public class Piece {
+public enum Piece {
+    X('X'), O('O'), EMPTY('-'), TIE('T');
+
     private final char symbol;
 
-    public Piece(char symbol){this.symbol = symbol;}
+    Piece(char symbol) {
+        this.symbol = symbol;
+    }
+    
 
-    public char getSymbol(){return this.symbol;}
+    public char getSymbol() {
+        return this.symbol;
+    }
 
     @Override
     public String toString() {
-        return "" + getSymbol();
+        return Character.toString(symbol);
     }
 }
