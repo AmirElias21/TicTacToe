@@ -15,64 +15,54 @@ public class Board{
 
     public Board(){
         cleanBoard();
-        updateBoardDisplay();
     }
-
 
 
     public void placeSymbol (int cor_x, int cor_y, Piece piece){
         if(isEmpty(cor_x, cor_y)){
             this.board[cor_x][cor_y] = piece;
         }
+        updateBoardDisplay();
     }
 
     private void updateBoardDisplay(){
         String temp = "";
         for(int row = 0; row < SIZE; row++){
             for(int col = 0; col < SIZE; col++){
-                if(!isEmpty(row, col)){
-                    if(this.board[row][col] == Piece.X){
-                        temp += x;
-                    }else if(this.board[row][col] == Piece.O){
-                        temp += o;
-                    }
-                }else{
-                    temp += empty;
-                }
+                temp += board[row][col];
                 if(col != 2){
                     temp += " | ";
                 }
             }
             if(row != 2){
-                temp += "\n--+---+--";
+                temp += "\n--+---+--\n";
             }
-            temp += "\n";
         }
         displayBoard = temp;
+        System.out.println(); // for clean look
     }
+    
 
-    public void playerTurn(Player player){
-        Scanner scan = new Scanner(System.in);
+    public void playerTurn(Player player, Scanner scan) { // to avoid memory leak so we pass the Scanner instead, will later add throw exception to ensure scanner does not crash if gets a string/char
         int row;
         int col;
         while(true){
             System.out.println(player.getName() + "'s turn:");
             System.out.print("Row: ");
             row = scan.nextInt() - 1;
-            if(row >= 0 && row <= 3){
+            if(row >= 0 && row < SIZE){
                 System.out.print("Col: ");
                 col = scan.nextInt() - 1;
-                if(col >= 0 && col <= 3){
+                if(col >= 0 && col < SIZE){
                     if(isEmpty(row, col)){
                         placeSymbol(row, col, player.getSymbol());
-                        updateBoardDisplay();
-                        System.out.println();
                         break;
                     }
                 }
             }
         }
     }
+    
     
     private void cleanBoard(){
         for(int row = 0; row < SIZE; row++){
@@ -82,7 +72,6 @@ public class Board{
         }
         updateBoardDisplay();
     }
-    
     
     private boolean isEmpty(int cor_x, int cor_y){
         return board[cor_x][cor_y] == Piece.EMPTY;
@@ -152,27 +141,27 @@ public class Board{
 
     
     public Piece getWinner(Player player1, Player player2){
-        Piece winnerSymbol = checkRows();
-
-        if(winnerSymbol == Piece.EMPTY){
-            winnerSymbol = checkCols();
-        }
-
-        if(winnerSymbol == Piece.EMPTY){
-            winnerSymbol = checkRightToLeftDiagonal();
-        }
-
-        if(winnerSymbol == Piece.EMPTY){
-            winnerSymbol = checkLeftToRightDiagonal();
-        }
-    
-        if(winnerSymbol == Piece.TIE || checkTie()){
+        if(checkTie()){
             System.out.println("It's a tie!");
             player1.updateTieCount();
             player2.updateTieCount();
             cleanBoard();
             return Piece.TIE;
         }
+    
+        Piece winnerSymbol = checkRows();
+        if(winnerSymbol == Piece.EMPTY){
+            winnerSymbol = checkCols();
+        }
+
+        if(winnerSymbol == Piece.EMPTY){
+            winnerSymbol = checkLeftToRightDiagonal();
+        }
+
+        if(winnerSymbol == Piece.EMPTY){
+            winnerSymbol = checkRightToLeftDiagonal();
+        }
+
     
         if(winnerSymbol == player1.getSymbol()) {
             System.out.println(player1.getName() + " won!");
@@ -192,6 +181,7 @@ public class Board{
     
         return Piece.EMPTY; // No winner yet
     }
+    
     
 
     public boolean checkTie(){

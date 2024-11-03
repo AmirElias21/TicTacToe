@@ -34,6 +34,8 @@ public class Main {
     }
 
     public static void run(){
+        Scanner scan = new Scanner(System.in);
+
         Board board = new Board();
         System.out.println(board);
 
@@ -41,10 +43,17 @@ public class Main {
         Player player2 = new Player("Kemoy", Piece.O);
 
         while(board.getWinner(player1, player2) == Piece.EMPTY){
-            board.playerTurn(player1);
+            board.playerTurn(player1, scan);
             System.out.println(board);
-            board.playerTurn(player2);
+            if(board.getWinner(player1, player2) != Piece.EMPTY || board.getWinner(player1, player2) == Piece.TIE){
+                break;
+            }
+            board.playerTurn(player2, scan);
             System.out.println(board);
+            if(board.getWinner(player1, player2) != Piece.EMPTY || board.getWinner(player1, player2) == Piece.TIE){
+                break;
+            }
         }
+        scan.close();
     }
 }
