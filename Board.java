@@ -22,7 +22,7 @@ public class Board{
 
 
 
-    private void placeSymbol (int cor_x, int cor_y, int x_or_o){
+    public void placeSymbol (int cor_x, int cor_y, int x_or_o){
         if(isEmpty(cor_x, cor_y)){
             if(validate(cor_x, cor_y)){
                 this.board[cor_x][cor_y] = x_or_o;
@@ -81,7 +81,7 @@ public class Board{
     }
     
     private boolean isEmpty(int cor_x, int cor_y){
-        return board[cor_x][cor_y] != 0;
+        return board[cor_x][cor_y] == 0;
     }
 
     private boolean validate(int pos_x, int pos_y){
@@ -89,22 +89,130 @@ public class Board{
     }
 
     // Check win condition
-    private boolean checkRows(){
+    private int checkRows(){
         for(int row = 0; row < SIZE; row++){
             if(isEmpty(row, 0)){
                 continue;
             }
-            return this.board[row][0] == this.board[row][1] && this.board[row][0] == this.board[row][2];
+            if(this.board[row][0] == this.board[row][1] && this.board[row][0] == this.board[row][2]){
+                if(isX(row, 0)){
+                    return 1;
+                }else{
+                    return 2;
+                }
+            }
+
         }
-        return false;
+        return 0;
     }
 
+    private int checkCols(){
+        for(int col = 0; col < SIZE; col++){
+            if(isEmpty(0, col)){
+                continue;
+            }
+            if(this.board[0][col] == this.board[1][col] && this.board[0][col] == this.board[2][col]){
+                if(isX(0, col)){
+                    return 1;
+                }else{
+                    return 2;
+                }
+            }
+        }
+        return 0;
+    }   
+
+    private int checkLeftToRightDiagonal(){
+        if(isEmpty(0,0)){
+            return 0;
+        }
+        if((this.board[0][0] == this.board[1][1]) && (this.board[0][0] == this.board[2][2])){
+            if(isX(0, 0)){
+                return 1;
+            }else{
+                return 2;
+            }
+        }
+        return 0;
+    }
+    
+    private int checkRightToLeftDiagonal(){
+        if(isEmpty(0,2)){
+            return 0;
+        }
+        if((this.board[0][2] == this.board[1][1]) && (this.board[0][2] == this.board[2][0])){
+            if(isX(0, 2)){
+                return 1;
+            }else{
+                return 2;
+            }
+        }
+        return 0;
+    }
+    
+    public boolean getWinnder(Player player1, Player player2){
+        if(checkRows() == player1.getSymbol()){
+            player1.updateWinCount();
+            player2.updateLoseCount();
+            gameOver();
+            return true;
+        }
+        if(checkRows() == player2.getSymbol()){
+            player2.updateWinCount();
+            player1.updateLoseCount();
+            gameOver();
+            return true;
+        }
+
+        if(checkCols() == player1.getSymbol()){
+            player1.updateWinCount();
+            player2.updateLoseCount();
+            gameOver();
+            return true;
+        }
+        if(checkCols() == player2.getSymbol()){
+            player2.updateWinCount();
+            player1.updateLoseCount();
+            gameOver();
+            return true;
+        }
+
+        if(checkLeftToRightDiagonal() == player1.getSymbol()){
+            player1.updateWinCount();
+            player2.updateLoseCount();
+            gameOver();
+            return true;
+        }
+        if(checkLeftToRightDiagonal() == player2.getSymbol()){
+            player2.updateWinCount();
+            player1.updateLoseCount();
+            gameOver();
+            return true;
+        }
+
+        if(checkRightToLeftDiagonal() == player1.getSymbol()){
+            player1.updateWinCount();
+            player2.updateLoseCount();
+            gameOver();
+            return true;
+        }
+        if(checkRightToLeftDiagonal() == player2.getSymbol()){
+            player2.updateWinCount();
+            player1.updateLoseCount();
+            gameOver();
+            return true;
+        }
+        return false;
+   }
+   
     private boolean isX(int pos_x, int pos_y){
         return this.board[pos_x][pos_y] == 1;
     }
     private boolean isY(int pos_x, int pos_y){
         return this.board[pos_x][pos_y] == 2;
     }
+    
+
 
     @Override
     public String toString() {
